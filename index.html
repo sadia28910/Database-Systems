@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canteen - Student</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="login.php">Admin</a></li>
+        </ul>
+    </nav>
+
+    <h1>Welcome to East West University Canteen</h1>
+
+    <div class="form-card">
+        <form id="orderForm" action="backend.php" method="POST">
+            <label for="student_name">Student Name:</label>
+            <input type="text" name="student_name" id="student_name" required>
+
+            <label for="student_id">Student ID:</label>
+            <input type="text" name="student_id" id="student_id" required>
+
+            <label for="food">Choose Food:</label>
+            <select name="food_id" id="food" required>
+                <option value="1">Burger - 120</option>
+                <option value="2">Pizza - 250</option>
+                <option value="3">Sandwich - 80</option>
+                <option value="4">Fries - 60</option>
+                <option value="5">Cold Drink - 40</option>
+                <option value="6">Hotdog - 100</option>
+            </select>
+
+            <label for="qty">Quantity:</label>
+            <input type="number" name="qty" id="qty" min="1" required>
+
+            <button type="submit">Buy Now</button>
+        </form>
+        <div id="totalAmount" class="success-msg" style="display:none;"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('orderForm');
+        const totalDiv = document.getElementById('totalAmount');
+
+        form.addEventListener('submit', function(e){
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            fetch('backend.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.text())
+            .then(data => {
+                totalDiv.style.display = 'block';
+                totalDiv.innerHTML = data;
+            })
+            .catch(err => {
+                totalDiv.style.display = 'block';
+                totalDiv.innerHTML = "Error occurred!";
+            });
+        });
+    </script>
+</body>
+</html>
